@@ -32,6 +32,59 @@ local function screenTouch( event )
     end
 end
 
+-- player initialization
+local function playerInit( )
+    player = display.newImage("ship.png", screenWidth * 0.5, screenHeight * 0.8 )
+    physics.addBody( player )
+    player.gravityScale = 0
+    player.lock = screenHeight * 0.8
+    player.SpeedLimiter = 200
+end
+
+-- player functions i guess?
+local function playerStep( )
+    local y = player.y
+
+    -- y-axis lock
+    local function playerLock( y )
+        local lock = player.lock
+            if y ~= lock then
+                y = lock
+            end
+        return y
+    end
+    player.y = playerLock( y )
+
+    local function playerSpeed( )
+        local limiter = player.SpeedLimiter
+        local maxSpeed = limiter
+        local minSpeed = -limiter
+        local xVel, yVel = player:getLinearVelocity()
+
+        if xVel > maxSpeed then
+            xVel = maxSpeed
+        end
+
+        if xVel < minSpeed then
+            xVel = minSpeed
+        end
+
+        print(xVel, yVel)
+        return xVel, yVel
+    end
+    local a, b = playerSpeed()
+    player:setLinearVelocity( a, b )
+    print(a, b)
+
+end
+
+-- step event
+local function step( event )
+    playerStep( )
+
+end
+
+
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -46,9 +99,7 @@ function scene:create( event )
     physics.pause( )
     
     -- the player
-    player = display.newImage( sceneGroup, "ship.png", screenWidth * 0.5, screenHeight * 0.8 )
-    physics.addBody( player )
-    player.gravityScale = 0
+    playerInit( )
     sceneGroup:insert( player )
     
     -- barrier sizes
@@ -126,5 +177,6 @@ scene:addEventListener( "destroy", scene )
 -- -----------------------------------------------------------------------------------
 
 display.currentStage:addEventListener( "touch", screenTouch )
+Runtime:addEventListener( "enterFrame", step )
 
 return scene
