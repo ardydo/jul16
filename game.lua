@@ -114,7 +114,7 @@ function scene:create( event )
     sceneGroup:insert( leftB )
     physics.addBody( leftB, "static" )
     -- right barrier
-    local rightB = display.newRect( screenWidth - barrierX, barrierY, -barrierW, barrierH )
+    local rightB = display.newRect( screenWidth - barrierX, barrierY, barrierW, barrierH )
     rightB:setFillColor( unpack(barrierColor) )
     sceneGroup:insert( rightB )
     physics.addBody( rightB, "static" )
