@@ -1,3 +1,11 @@
+application = 
+{
+	content =
+	{
+		fps = 60
+	}
+}
+
 if string.sub(system.getInfo("model"),1,4) == "iPad" then
     application = 
     {
