@@ -56,14 +56,15 @@ function scene:create( event )
     local barrierH = screenHeight
     local barrierX = barrierW * 0.5
     local barrierY = barrierH * 0.5
+    local barrierColor = { 1, 1, 1, 1 }
     -- left barrier
     local leftB = display.newRect( barrierX, barrierY, barrierW, barrierH )
-    leftB:setFillColor( 0, 1, 0 )
+    leftB:setFillColor( unpack(barrierColor) )
     sceneGroup:insert( leftB )
     physics.addBody( leftB, "static" )
     -- right barrier
     local rightB = display.newRect( screenWidth - barrierX, barrierY, -barrierW, barrierH )
-    rightB:setFillColor( 0, 1, 0 )
+    rightB:setFillColor( unpack(barrierColor) )
     sceneGroup:insert( rightB )
     physics.addBody( rightB, "static" )
 
