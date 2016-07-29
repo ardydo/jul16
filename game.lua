@@ -104,6 +104,11 @@ function scene:create( event )
 
     physics.start( )
     physics.pause( )
+
+    -- background
+    local background = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
+    background:setFillColor( 149/255, 199/255, 236/255 )
+    sceneGroup:insert(background)
     
     -- the player
     playerInit( )
