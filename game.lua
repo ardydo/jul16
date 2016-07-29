@@ -13,22 +13,29 @@ local player
 -- width and thingies cuz scop
 local screenWidth = display.contentWidth
 local screenHeight = display.contentHeight
+local leftTouch = false
+local rightTouch = false
 
+local function touchReset ( )
+    leftTouch = false
+    rightTouch = false
+end
 
 local function screenTouch( event )
     local x = event.x
     local y = event.y
-    local force = 2
 
     -- print("boop")
-    if (x > screenWidth * 0.5 ) then
-        player:applyForce( force, 0, player.x, player.y )
-        player:applyTorque( force )
-
-    elseif ( x <= screenWidth ) then
-        player:applyForce( -force, 0, player.x, player.y )
-        player:applyTorque( -force )
-        
+    if event.phase == "began" then
+        if (x > screenWidth * 0.5 ) then
+            rightTouch = true
+        elseif ( x <= screenWidth ) then
+            leftTouch = true
+        end
+    end
+    
+    if (event.phase == "ended") then
+        touchReset( )
     end
 end
 
