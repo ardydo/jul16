@@ -42,7 +42,8 @@ end
 -- player initialization
 local function playerInit( )
     player = display.newImage("ship.png", screenWidth * 0.5, screenHeight * 0.8 )
-    physics.addBody( player )
+    local mask = { -2, -26, 2, -26, 22, 25, -22, 25}
+    physics.addBody( player , { shape = mask})
     player.gravityScale = 0
     player.lock = screenHeight * 0.8
     player.acel = 2
