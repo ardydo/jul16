@@ -46,7 +46,7 @@ local function playerInit( )
     physics.addBody( player , { shape = mask})
     player.gravityScale = 0
     player.lock = screenHeight * 0.8
-    player.acel = 2
+    player.acel = 1
 end
 
 -- player functions i guess?
@@ -60,10 +60,8 @@ local function playerStep( )
     
     if rightTouch then
         player:applyForce( acel, 0, x, y )
-        player:applyTorque( acel )
     elseif leftTouch then
         player:applyForce( -acel, 0, x, y )
-        player:applyTorque( -acel )
     end
 end
 
