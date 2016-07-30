@@ -88,7 +88,13 @@ function scene:create( event )
     local background = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
     background:setFillColor( 149/255, 199/255, 236/255 )
     sceneGroup:insert(background)
-    
+
+    --middle mark
+    --to show what side to press to launch the ship
+    local mark = display.newLine( display.contentCenterX, screenHeight * 0.05, display.contentCenterX, screenHeight * 0.95 )
+    mark:setStrokeColor( 36/255, 100/255, 145/255, 60/255 )
+    sceneGroup:insert(mark)
+
     -- the player
     playerInit( )
     sceneGroup:insert( player )
