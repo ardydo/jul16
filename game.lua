@@ -104,7 +104,7 @@ function scene:create( event )
     local barrierH = screenHeight
     local barrierX = barrierW * 0.5
     local barrierY = barrierH * 0.5
-    local barrierColor = { 1, 1, 1, 1 }
+    local barrierColor = { 36/255, 100/255, 145/255, 1 }
     -- left barrier
     local leftB = display.newRect( barrierX, barrierY, barrierW, barrierH )
     leftB:setFillColor( unpack(barrierColor) )
