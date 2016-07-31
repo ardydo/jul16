@@ -82,6 +82,7 @@ function scene:create( event )
     -- Code here runs when the scene is first created but has not yet appeared on screen
 
     physics.start( )
+    --physics.setDrawMode( "hybrid" )
     physics.pause( )
 
     -- background
