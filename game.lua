@@ -71,7 +71,7 @@ local function spawnEnemy( x )
         enemy.isSensor = true
         -- the name for collision purposes
         enemy.name = "enemy"
-        local enemySpin = 50
+        local enemySpin = 200
         enemy.angularVelocity = ( math.random( -enemySpin, enemySpin ) )
 
     --end
