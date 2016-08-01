@@ -18,6 +18,8 @@ local rightTouch = false
 local alive
 local score = 0
 local scoreDisplay
+local spawnTimerDefault = 60 * 1
+local spawnTimer = spawnTimerDefault
 
 local function touchReset ( )
     leftTouch = false
@@ -178,6 +180,31 @@ local function remover( )
 
 end
 
+local function step(  )
+    -- run the timer
+    spawnTimer = spawnTimer - 1
+
+    if spawnTimer <= 0 then
+        print("here it comes!" )
+        -- setting a random x to spawn the enemy
+        local x = math.random( screenWidth * 0.1, screenWidth * 0.9 )
+        
+        -- spawn the enemy
+        spawnEnemy( x )
+
+        -- adjust the time
+        if spawnTimerDefault > 20 then
+            spawnTimerDefault = spawnTimerDefault - 5
+
+        end
+
+        -- reset the timer
+        spawnTimer = spawnTimerDefault
+    
+    end
+
+end
+
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -288,6 +315,7 @@ function scene:destroy( event )
 
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
+    removeEventListener( "enterFrame", step )
 
 end
 
@@ -302,5 +330,6 @@ scene:addEventListener( "destroy", scene )
 -- -----------------------------------------------------------------------------------
 
 display.currentStage:addEventListener( "touch", screenTouch )
+Runtime:addEventListener("enterFrame", step )
 
 return scene
