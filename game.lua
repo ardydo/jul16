@@ -32,9 +32,7 @@ local function screenTouch( event )
         elseif ( x <= player.x ) then
             leftTouch = true
         end
-    end
-    
-    if (event.phase == "ended") then
+    else
         touchReset( )
     end
 end
