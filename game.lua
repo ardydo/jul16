@@ -22,95 +22,155 @@ local scoreDisplay
 local function touchReset ( )
     leftTouch = false
     rightTouch = false
+
 end
 
 local function screenTouch( event )
     local x = event.x
     local y = event.y
-
+    
+    -- alive filter
     if alive then
+        
+        -- phase filter
         if event.phase == "began" then
+            
+            -- touched to the right
             if (x > player.x ) then
                 rightTouch = true
+            
+            -- touched to the left
             elseif ( x <= player.x ) then
                 leftTouch = true
             end
+        
+        -- reset vars to stop code from running
         elseif event.phase == "ended" then
             touchReset( )
+        
         end 
+    
     end
+
 end
 
 -- player initialization
 local function playerInit( )
+    -- player image
     player = display.newImage("ship.png", screenWidth * 0.5, screenHeight * 0.8 )
+
+    -- player collision mask
     local mask = { -2, -26, 2, -26, 22, 25, -22, 25}
     physics.addBody( player , { shape = mask})
+    -- nullifying gravity
     player.gravityScale = 0
+    -- setting the y-axis lock
     player.lock = screenHeight * 0.8
+    -- aceleration per step
     player.acel = 1
+    -- setting the alive var
     alive = true
 
+    -- player step function
     function player.enterFrame ( self )
         local acel = self.acel
         local x = self.x
         local y = self.y
-        -- y-axis lock
+        -- lock the y-axis
         self.y = self.lock
+        
+        -- alive filter
         if alive then
+
+            -- right thrust
             if rightTouch then
                 self:applyForce( acel, 0, x, y )
+
+            -- left thrust
             elseif leftTouch then
                 self:applyForce( -acel, 0, x, y )
+
             end
+        
         end
+    
     end
 
+    -- player - enemy collision
     local function collision( self, event )
+        -- gettint the name
         local target = event.other.name
+
         if (event.phase == "began") then
+            
+            -- name filter
             if ( target == "enemy" ) then
-            alive = false
-            self:removeSelf( )            
+                -- u ded
+                alive = false
+                -- take yourself to the graveyard
+                self:removeSelf( )
+
             end
+
         end
-        
+    
     end
 
     player.collision = collision
     player:addEventListener( "collision")
     Runtime:addEventListener( "enterFrame", player )
+
 end
 
 local function spawnEnemy( x )
+    -- local copy of the scene group
     local sceneGroup = scene.view
+    -- setting the y offscreen
     local y = screenHeight * -0.1 
+    -- enemy image
     local enemy = display.newImage( "enemy.png", x, y )
     sceneGroup:insert( enemy )
+    -- circular body
     physics.addBody( enemy, "dynamic", {radius = 13} )
+    -- to not really collide with the player
     enemy.isSensor = true
+    -- the name for collision purposes
     enemy.name = "enemy"
+
 end
 
 local function remover( )
+    -- local copy of the view
     local sceneGroup = scene.view
+    -- a rect offscreen and of it's same width
     local me = display.newRect( screenWidth * 0.5, screenHeight * 1.1, screenWidth, 20 )
     sceneGroup:insert ( me )
+    -- static body so it doesn't fall away
     physics.addBody( me, "static" )
+    -- name for collision purpose
     name = "remover"
     me.isSensor = true
 
     local function collision ( self, event, other )
         local target = event.other.name
         if (event.phase == "began") then
+            
             if (target == "enemy") then
+                -- add score if the player is alice
+                
                 if alive then
                     score = score + 10
                     currentScoreDisplay.text = string.format ( score )
+                
                 end
+                
+                -- destroy the enemy
                 event.other:removeSelf( )
+            
             end
+        
         end
+    
     end
     
     me.collision = collision
