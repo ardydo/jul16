@@ -168,6 +168,7 @@ local function remover( )
                 
                 -- destroy the enemy
                 event.other:removeSelf( )
+                event.other = nil
             
             end
         
