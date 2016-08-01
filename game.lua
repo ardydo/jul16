@@ -259,6 +259,7 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         -- Go ´phshsyhsucs
+        spawnEnemy( screenWidth * 0.5 )
         physics.start( )
 
     end
