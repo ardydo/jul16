@@ -15,6 +15,7 @@ local screenWidth = display.contentWidth
 local screenHeight = display.contentHeight
 local leftTouch = false
 local rightTouch = false
+local alive
 
 local function touchReset ( )
     leftTouch = false
@@ -25,15 +26,16 @@ local function screenTouch( event )
     local x = event.x
     local y = event.y
 
-    -- print("boop")
-    if event.phase == "began" then
-        if (x > player.x ) then
-            rightTouch = true
-        elseif ( x <= player.x ) then
-            leftTouch = true
-        end
-    else
-        touchReset( )
+    if alive then
+        if event.phase == "began" then
+            if (x > player.x ) then
+                rightTouch = true
+            elseif ( x <= player.x ) then
+                leftTouch = true
+            end
+        else
+            touchReset( )
+        end 
     end
 end
 
@@ -45,6 +47,7 @@ local function playerInit( )
     player.gravityScale = 0
     player.lock = screenHeight * 0.8
     player.acel = 1
+    alive = true
 
     function player.enterFrame ( self )
         local acel = self.acel
