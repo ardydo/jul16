@@ -239,7 +239,7 @@ function scene:create( event )
     physics.pause( )
 
     -- background
-    local background = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
+    local background = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight + 20)
     background:setFillColor( 149/255, 199/255, 236/255 )
     sceneGroup:insert(background)
 
@@ -258,7 +258,7 @@ function scene:create( event )
     
     -- barrier sizes
     local barrierW = 10
-    local barrierH = screenHeight
+    local barrierH = screenHeight + 20
     local barrierX = barrierW * 0.5
     local barrierY = barrierH * 0.5
     local barrierColor = { 36/255, 100/255, 145/255, 1 }
