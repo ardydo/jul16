@@ -47,27 +47,22 @@ local function playerInit( )
     player.gravityScale = 0
     player.lock = screenHeight * 0.8
     player.acel = 1
-end
 
--- player functions i guess?
-local function playerStep( )
-    local acel = player.acel
-    local x = player.x
-    local y = player.y
-
-    -- y-axis lock
-    player.y = player.lock
-    
-    if rightTouch then
-        player:applyForce( acel, 0, x, y )
-    elseif leftTouch then
-        player:applyForce( -acel, 0, x, y )
+    function player.enterFrame ( self )
+        local acel = self.acel
+        local x = self.x
+        local y = self.y
+        -- y-axis lock
+        self.y = self.lock
+        
+        if rightTouch then
+            self:applyForce( acel, 0, x, y )
+        elseif leftTouch then
+            self:applyForce( -acel, 0, x, y )
+        end
     end
-end
 
--- step event
-local function step( event )
-    playerStep( )
+    Runtime:addEventListener( "enterFrame", player )
 end
 
 
@@ -175,6 +170,5 @@ scene:addEventListener( "destroy", scene )
 -- -----------------------------------------------------------------------------------
 
 display.currentStage:addEventListener( "touch", screenTouch )
-Runtime:addEventListener( "enterFrame", step )
 
 return scene
