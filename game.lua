@@ -92,6 +92,32 @@ local function spawnEnemy( x )
     enemy.name = "enemy"
 end
 
+local function remover( )
+    local sceneGroup = scene.view
+    local me = display.newRect( screenWidth * 0.5, screenHeight * 1.1, screenWidth, 20 )
+    sceneGroup:insert ( me )
+    physics.addBody( me, "static" )
+    name = "remover"
+    me.isSensor = true
+
+    local function collision ( self, event, other )
+        local target = event.other.name
+        if (event.phase == "began") then
+            if (target == "enemy") then
+                if alive then
+                    score = score + 10
+                    currentScoreDisplay.text = string.format ( score )
+                end
+                event.other:removeSelf( )
+            end
+        end
+    end
+    
+    me.collision = collision
+    me:addEventListener("collision")
+
+end
+
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -122,6 +148,9 @@ function scene:create( event )
     -- the player
     playerInit( )
     sceneGroup:insert( player )
+
+    -- the remover
+    remover( )
     
     -- barrier sizes
     local barrierW = 10
