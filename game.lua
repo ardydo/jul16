@@ -168,6 +168,8 @@ local function playerInit( )
                 alive = false
                 -- take yourself to the graveyard
                 self:removeSelf( )
+                composer.removeScene( "gameover" )
+                composer.showOverlay( "gameover", { time = 500, effect = "crossFade" } )
 
             end
 
