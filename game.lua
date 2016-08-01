@@ -56,6 +56,28 @@ local function screenTouch( event )
 
 end
 
+local function spawnEnemy( x )
+    --if alive then
+        -- local copy of the scene group
+        local sceneGroup = scene.view
+        -- setting the y offscreen
+        local y = screenHeight * -0.1 
+        -- enemy image
+        local enemy = display.newImage( "enemy.png", x, y )
+        sceneGroup:insert( enemy )
+        -- circular body
+        physics.addBody( enemy, "dynamic", {radius = 13} )
+        -- to not really collide with the player
+        enemy.isSensor = true
+        -- the name for collision purposes
+        enemy.name = "enemy"
+        local enemySpin = 50
+        enemy.angularVelocity = ( math.random( -enemySpin, enemySpin ) )
+
+    --end
+
+end
+
 -- player initialization
 local function playerInit( )
     -- player image
@@ -73,6 +95,39 @@ local function playerInit( )
     -- setting the alive var
     alive = true
 
+    local function spawner(  )
+        -- run the timer
+        spawnTimer = spawnTimer - 1
+
+        -- trigger the timer
+        if spawnTimer <= 0 then
+            print("here it comes!" )
+            -- setting a random x to spawn the enemy
+            local x = math.random( screenWidth * 0.1, screenWidth * 0.9 )
+            
+            -- spawn the enemy
+            spawnEnemy( x )
+
+            -- adjust the time
+            if spawnTimerDefault > 20 then
+                spawnTimerDefault = spawnTimerDefault - 5
+
+            elseif spawnTimerDefault > 10 then
+                spawnTimerDefault = spawnTimerDefault - 1
+
+            end
+
+            print(spawnTimerDefault)
+
+            -- reset the timer
+            spawnTimer = spawnTimerDefault
+        
+        end
+
+    end
+
+
+
     -- player step function
     function player.enterFrame ( self )
         local acel = self.acel
@@ -83,6 +138,8 @@ local function playerInit( )
         
         -- alive filter
         if alive then
+
+            spawner( )
 
             -- right thrust
             if rightTouch then
@@ -121,25 +178,6 @@ local function playerInit( )
     player.collision = collision
     player:addEventListener( "collision")
     Runtime:addEventListener( "enterFrame", player )
-
-end
-
-local function spawnEnemy( x )
-    -- local copy of the scene group
-    local sceneGroup = scene.view
-    -- setting the y offscreen
-    local y = screenHeight * -0.1 
-    -- enemy image
-    local enemy = display.newImage( "enemy.png", x, y )
-    sceneGroup:insert( enemy )
-    -- circular body
-    physics.addBody( enemy, "dynamic", {radius = 13} )
-    -- to not really collide with the player
-    enemy.isSensor = true
-    -- the name for collision purposes
-    enemy.name = "enemy"
-    local enemySpin = 50
-    enemy.angularVelocity = ( math.random( -enemySpin, enemySpin ) )
 
 end
 
@@ -183,30 +221,6 @@ local function remover( )
 
 end
 
-local function step(  )
-    -- run the timer
-    spawnTimer = spawnTimer - 1
-
-    if spawnTimer <= 0 then
-        print("here it comes!" )
-        -- setting a random x to spawn the enemy
-        local x = math.random( screenWidth * 0.1, screenWidth * 0.9 )
-        
-        -- spawn the enemy
-        spawnEnemy( x )
-
-        -- adjust the time
-        if spawnTimerDefault > 20 then
-            spawnTimerDefault = spawnTimerDefault - 5
-
-        end
-
-        -- reset the timer
-        spawnTimer = spawnTimerDefault
-    
-    end
-
-end
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -331,6 +345,5 @@ scene:addEventListener( "destroy", scene )
 -- -----------------------------------------------------------------------------------
 
 display.currentStage:addEventListener( "touch", screenTouch )
-Runtime:addEventListener("enterFrame", step )
 
 return scene
