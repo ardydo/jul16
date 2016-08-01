@@ -57,11 +57,14 @@ local function playerInit( )
         local y = self.y
         -- y-axis lock
         self.y = self.lock
-        
-        if rightTouch then
-            self:applyForce( acel, 0, x, y )
-        elseif leftTouch then
-            self:applyForce( -acel, 0, x, y )
+        if alive then
+            if rightTouch then
+                self:applyForce( acel, 0, x, y )
+            elseif leftTouch then
+                self:applyForce( -acel, 0, x, y )
+            end
+        end
+    end
         end
     end
 
