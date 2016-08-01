@@ -65,9 +65,20 @@ local function playerInit( )
             end
         end
     end
+
+    local function collision( self, event )
+        local target = event.other.name
+        if (event.phase == "began") then
+            if ( target == "enemy" ) then
+            alive = false
+            self:removeSelf( )            
+            end
         end
+        
     end
 
+    player.collision = collision
+    player:addEventListener( "collision")
     Runtime:addEventListener( "enterFrame", player )
 end
 
