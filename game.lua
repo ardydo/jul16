@@ -16,6 +16,8 @@ local screenHeight = display.contentHeight
 local leftTouch = false
 local rightTouch = false
 local alive
+local score = 0
+local scoreDisplay
 
 local function touchReset ( )
     leftTouch = false
@@ -115,6 +117,18 @@ function scene:create( event )
     sceneGroup:insert( rightB )
     physics.addBody( rightB, "static" )
 
+    -- score
+    local options = {
+        text = "0",
+        x = screenWidth * 0.5,
+        y = 10,
+        width = screenWidth,
+        fontSize = 16,
+        align = "center",
+    }
+    currentScoreDisplay = display.newText( options )
+    sceneGroup:insert( currentScoreDisplay )
+
 end
 
 
@@ -126,6 +140,8 @@ function scene:show( event )
 
     if ( phase == "will" ) then
         -- Code here runs when the scene is still off screen (but is about to come on screen)
+        score = 0
+        currentScoreDisplay.text = score
         
 
     elseif ( phase == "did" ) then
