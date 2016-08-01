@@ -38,11 +38,11 @@ local function screenTouch( event )
         if event.phase == "began" then
             
             -- touched to the right
-            if (x > player.x ) then
+            if (x > display.contentCenterX ) then
                 rightTouch = true
             
             -- touched to the left
-            elseif ( x <= player.x ) then
+            elseif ( x <= display.contentCenterX ) then
                 leftTouch = true
             end
         
@@ -229,11 +229,9 @@ function scene:create( event )
 
     --middle mark
     --to show what side to press to launch the ship
-    --[[
     local mark = display.newLine( display.contentCenterX, screenHeight * 0.05, display.contentCenterX, screenHeight * 0.95 )
     mark:setStrokeColor( 36/255, 100/255, 145/255, 60/255 )
     sceneGroup:insert(mark)
-    --]]
 
     -- the player
     playerInit( )
