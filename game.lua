@@ -71,6 +71,15 @@ local function playerInit( )
     Runtime:addEventListener( "enterFrame", player )
 end
 
+local function spawnEnemy( x )
+    local sceneGroup = scene.view
+    local y = screenHeight * -0.1 
+    local enemy = display.newImage( "enemy.png", x, y )
+    sceneGroup:insert( enemy )
+    physics.addBody( enemy, "dynamic", {radius = 13} )
+    enemy.isSensor = true
+    enemy.name = "enemy"
+end
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
